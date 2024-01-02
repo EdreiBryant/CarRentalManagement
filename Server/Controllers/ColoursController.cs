@@ -13,83 +13,83 @@ namespace CarRentalManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MakesController : ControllerBase
+    public class ColoursController : ControllerBase
     {
         //Refactor
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
         //Refactor
-        //public MakesController(ApplicationDbContext context)
+        //public ColoursController(ApplicationDbContext context)
         //{
         //    _context = context;
         //}
-        public MakesController(IUnitOfWork unitOfWork)
+        public ColoursController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Makes
+        // GET: api/Colours
         [HttpGet]
         //Refactor
-        //public async Task<ActionResult<IEnumerable<Make>>> GetMakes()
+        //public async Task<ActionResult<IEnumerable<Colour>>> GetColours()
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Colours == null)
         //  {
         //      return NotFound();
         //  }
-        //    return await _context.Makes.ToListAsync();
+        //    return await _context.Colours.ToListAsync();
         //}
 
-        public async Task<ActionResult> GetMakes()
+        public async Task<ActionResult> GetColours()
         {
-            var makes = await _unitOfWork.Makes.GetAll();
-            return Ok(makes);
+            var Colours = await _unitOfWork.Colours.GetAll();
+            return Ok(Colours);
         }
 
-        // GET: api/Makes/5
+        // GET: api/Colours/5
         [HttpGet("{id}")]
         //Refactor/Changed
-        //public async Task<ActionResult<Make>> GetMake(int id)
+        //public async Task<ActionResult<Colour>> GetColour(int id)
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Colours == null)
         //  {
         //      return NotFound();
         //  }
-        //    var make = await _context.Makes.FindAsync(id);
+        //    var Colour = await _context.Colours.FindAsync(id);
 
-        //    if (make == null)
+        //    if (Colour == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return make;
+        //    return Colour;
         //}
 
-        public async Task<ActionResult> GetMake(int id)
+        public async Task<ActionResult> GetColour(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var Colour = await _unitOfWork.Colours.Get(q => q.Id == id);
 
-            if (make == null) 
+            if (Colour == null)
             {
                 return NotFound();
             }
 
-            return Ok(make);
+            return Ok(Colour);
         }
 
-        // PUT: api/Makes/5
+        // PUT: api/Colours/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Make make)
+        public async Task<IActionResult> PutColour(int id, Colour Colour)
         {
-            if (id != make.Id)
+            if (id != Colour.Id)
             {
                 return BadRequest();
             }
             //Refactor/Changed
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Makes.Update(make);
+            //_context.Entry(Colour).State = EntityState.Modified;
+            _unitOfWork.Colours.Update(Colour);
 
             try
             {
@@ -99,7 +99,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             //{
-            //    if (!MakeExists(id))
+            //    if (!ColourExists(id))
             //    {
             //        return NotFound();
             //    }
@@ -110,7 +110,7 @@ namespace CarRentalManagement.Server.Controllers
             //}
 
             {
-                if (!await MakeExists(id))
+                if (!await ColourExists(id))
                 {
                     return NotFound();
                 }
@@ -119,64 +119,64 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Makes
+        // POST: api/Colours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Make make)
+        public async Task<ActionResult<Colour>> PostColour(Colour Colour)
         {
-          //if (_context.Makes == null)
-          //{
-          //    return Problem("Entity set 'ApplicationDbContext.Makes'  is null.");
-          //}
-          //  _context.Makes.Add(make);
-          //  await _context.SaveChangesAsync();
-            await _unitOfWork.Makes.Insert(make);
+            //if (_context.Colours == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.Colours'  is null.");
+            //}
+            //  _context.Colours.Add(Colour);
+            //  await _context.SaveChangesAsync();
+            await _unitOfWork.Colours.Insert(Colour);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = make.Id }, make);
+            return CreatedAtAction("GetColour", new { id = Colour.Id }, Colour);
         }
 
-        // DELETE: api/Makes/5
+        // DELETE: api/Colours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteColour(int id)
         {
-            //if (_context.Makes == null)
+            //if (_context.Colours == null)
             //{
             //    return NotFound();
             //}
-            //var make = await _context.Makes.FindAsync(id);
-            //if (make == null)
+            //var Colour = await _context.Colours.FindAsync(id);
+            //if (Colour == null)
             //{
             //    return NotFound();
             //}
 
-            //_context.Makes.Remove(make);
+            //_context.Colours.Remove(Colour);
             //await _context.SaveChangesAsync();
 
             //return NoContent();
 
-            var make = await _unitOfWork.Makes.Get(q => q.Id==id);
-            if (make == null)
+            var Colour = await _unitOfWork.Colours.Get(q => q.Id == id);
+            if (Colour == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Makes.Delete(id);
+            await _unitOfWork.Colours.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
 
         }
 
-        //private bool MakeExists(int id)
+        //private bool ColourExists(int id)
         //{
-        //    return (_context.Makes?.Any(e => e.Id == id)).GetValueOrDefault();
+        //    return (_context.Colours?.Any(e => e.Id == id)).GetValueOrDefault();
         //}
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> ColourExists(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q =>q.Id==id);
-            return make != null;
+            var Colour = await _unitOfWork.Colours.Get(q => q.Id == id);
+            return Colour != null;
         }
     }
 }

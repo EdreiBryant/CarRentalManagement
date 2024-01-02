@@ -13,83 +13,83 @@ namespace CarRentalManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MakesController : ControllerBase
+    public class ModelsController : ControllerBase
     {
         //Refactor
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
         //Refactor
-        //public MakesController(ApplicationDbContext context)
+        //public ModelsController(ApplicationDbContext context)
         //{
         //    _context = context;
         //}
-        public MakesController(IUnitOfWork unitOfWork)
+        public ModelsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Makes
+        // GET: api/Models
         [HttpGet]
         //Refactor
-        //public async Task<ActionResult<IEnumerable<Make>>> GetMakes()
+        //public async Task<ActionResult<IEnumerable<Model>>> GetModels()
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Models == null)
         //  {
         //      return NotFound();
         //  }
-        //    return await _context.Makes.ToListAsync();
+        //    return await _context.Models.ToListAsync();
         //}
 
-        public async Task<ActionResult> GetMakes()
+        public async Task<ActionResult> GetModels()
         {
-            var makes = await _unitOfWork.Makes.GetAll();
-            return Ok(makes);
+            var Models = await _unitOfWork.Models.GetAll();
+            return Ok(Models);
         }
 
-        // GET: api/Makes/5
+        // GET: api/Models/5
         [HttpGet("{id}")]
         //Refactor/Changed
-        //public async Task<ActionResult<Make>> GetMake(int id)
+        //public async Task<ActionResult<Model>> GetModel(int id)
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Models == null)
         //  {
         //      return NotFound();
         //  }
-        //    var make = await _context.Makes.FindAsync(id);
+        //    var Model = await _context.Models.FindAsync(id);
 
-        //    if (make == null)
+        //    if (Model == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return make;
+        //    return Model;
         //}
 
-        public async Task<ActionResult> GetMake(int id)
+        public async Task<ActionResult> GetModel(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var Model = await _unitOfWork.Models.Get(q => q.Id == id);
 
-            if (make == null) 
+            if (Model == null)
             {
                 return NotFound();
             }
 
-            return Ok(make);
+            return Ok(Model);
         }
 
-        // PUT: api/Makes/5
+        // PUT: api/Models/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Make make)
+        public async Task<IActionResult> PutModel(int id, Model Model)
         {
-            if (id != make.Id)
+            if (id != Model.Id)
             {
                 return BadRequest();
             }
             //Refactor/Changed
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Makes.Update(make);
+            //_context.Entry(Model).State = EntityState.Modified;
+            _unitOfWork.Models.Update(Model);
 
             try
             {
@@ -99,7 +99,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             //{
-            //    if (!MakeExists(id))
+            //    if (!ModelExists(id))
             //    {
             //        return NotFound();
             //    }
@@ -110,7 +110,7 @@ namespace CarRentalManagement.Server.Controllers
             //}
 
             {
-                if (!await MakeExists(id))
+                if (!await ModelExists(id))
                 {
                     return NotFound();
                 }
@@ -119,64 +119,64 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Makes
+        // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Make make)
+        public async Task<ActionResult<Model>> PostModel(Model Model)
         {
-          //if (_context.Makes == null)
-          //{
-          //    return Problem("Entity set 'ApplicationDbContext.Makes'  is null.");
-          //}
-          //  _context.Makes.Add(make);
-          //  await _context.SaveChangesAsync();
-            await _unitOfWork.Makes.Insert(make);
+            //if (_context.Models == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.Models'  is null.");
+            //}
+            //  _context.Models.Add(Model);
+            //  await _context.SaveChangesAsync();
+            await _unitOfWork.Models.Insert(Model);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = make.Id }, make);
+            return CreatedAtAction("GetModel", new { id = Model.Id }, Model);
         }
 
-        // DELETE: api/Makes/5
+        // DELETE: api/Models/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteModel(int id)
         {
-            //if (_context.Makes == null)
+            //if (_context.Models == null)
             //{
             //    return NotFound();
             //}
-            //var make = await _context.Makes.FindAsync(id);
-            //if (make == null)
+            //var Model = await _context.Models.FindAsync(id);
+            //if (Model == null)
             //{
             //    return NotFound();
             //}
 
-            //_context.Makes.Remove(make);
+            //_context.Models.Remove(Model);
             //await _context.SaveChangesAsync();
 
             //return NoContent();
 
-            var make = await _unitOfWork.Makes.Get(q => q.Id==id);
-            if (make == null)
+            var Model = await _unitOfWork.Models.Get(q => q.Id == id);
+            if (Model == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Makes.Delete(id);
+            await _unitOfWork.Models.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
 
         }
 
-        //private bool MakeExists(int id)
+        //private bool ModelExists(int id)
         //{
-        //    return (_context.Makes?.Any(e => e.Id == id)).GetValueOrDefault();
+        //    return (_context.Models?.Any(e => e.Id == id)).GetValueOrDefault();
         //}
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> ModelExists(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q =>q.Id==id);
-            return make != null;
+            var Model = await _unitOfWork.Models.Get(q => q.Id == id);
+            return Model != null;
         }
     }
 }

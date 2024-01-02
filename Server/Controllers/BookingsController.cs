@@ -13,83 +13,83 @@ namespace CarRentalManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MakesController : ControllerBase
+    public class BookingsController : ControllerBase
     {
         //Refactor
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
         //Refactor
-        //public MakesController(ApplicationDbContext context)
+        //public BookingsController(ApplicationDbContext context)
         //{
         //    _context = context;
         //}
-        public MakesController(IUnitOfWork unitOfWork)
+        public BookingsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Makes
+        // GET: api/Bookings
         [HttpGet]
         //Refactor
-        //public async Task<ActionResult<IEnumerable<Make>>> GetMakes()
+        //public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Bookings == null)
         //  {
         //      return NotFound();
         //  }
-        //    return await _context.Makes.ToListAsync();
+        //    return await _context.Bookings.ToListAsync();
         //}
 
-        public async Task<ActionResult> GetMakes()
+        public async Task<ActionResult> GetBookings()
         {
-            var makes = await _unitOfWork.Makes.GetAll();
-            return Ok(makes);
+            var Bookings = await _unitOfWork.Bookings.GetAll();
+            return Ok(Bookings);
         }
 
-        // GET: api/Makes/5
+        // GET: api/Bookings/5
         [HttpGet("{id}")]
         //Refactor/Changed
-        //public async Task<ActionResult<Make>> GetMake(int id)
+        //public async Task<ActionResult<Booking>> GetBooking(int id)
         //{
-        //  if (_context.Makes == null)
+        //  if (_context.Bookings == null)
         //  {
         //      return NotFound();
         //  }
-        //    var make = await _context.Makes.FindAsync(id);
+        //    var Booking = await _context.Bookings.FindAsync(id);
 
-        //    if (make == null)
+        //    if (Booking == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return make;
+        //    return Booking;
         //}
 
-        public async Task<ActionResult> GetMake(int id)
+        public async Task<ActionResult> GetBooking(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var Booking = await _unitOfWork.Bookings.Get(q => q.Id == id);
 
-            if (make == null) 
+            if (Booking == null)
             {
                 return NotFound();
             }
 
-            return Ok(make);
+            return Ok(Booking);
         }
 
-        // PUT: api/Makes/5
+        // PUT: api/Bookings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Make make)
+        public async Task<IActionResult> PutBooking(int id, Booking Booking)
         {
-            if (id != make.Id)
+            if (id != Booking.Id)
             {
                 return BadRequest();
             }
             //Refactor/Changed
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Makes.Update(make);
+            //_context.Entry(Booking).State = EntityState.Modified;
+            _unitOfWork.Bookings.Update(Booking);
 
             try
             {
@@ -99,7 +99,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             //{
-            //    if (!MakeExists(id))
+            //    if (!BookingExists(id))
             //    {
             //        return NotFound();
             //    }
@@ -110,7 +110,7 @@ namespace CarRentalManagement.Server.Controllers
             //}
 
             {
-                if (!await MakeExists(id))
+                if (!await BookingExists(id))
                 {
                     return NotFound();
                 }
@@ -119,64 +119,64 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Makes
+        // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Make make)
+        public async Task<ActionResult<Booking>> PostBooking(Booking Booking)
         {
-          //if (_context.Makes == null)
-          //{
-          //    return Problem("Entity set 'ApplicationDbContext.Makes'  is null.");
-          //}
-          //  _context.Makes.Add(make);
-          //  await _context.SaveChangesAsync();
-            await _unitOfWork.Makes.Insert(make);
+            //if (_context.Bookings == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.Bookings'  is null.");
+            //}
+            //  _context.Bookings.Add(Booking);
+            //  await _context.SaveChangesAsync();
+            await _unitOfWork.Bookings.Insert(Booking);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = make.Id }, make);
+            return CreatedAtAction("GetBooking", new { id = Booking.Id }, Booking);
         }
 
-        // DELETE: api/Makes/5
+        // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteBooking(int id)
         {
-            //if (_context.Makes == null)
+            //if (_context.Bookings == null)
             //{
             //    return NotFound();
             //}
-            //var make = await _context.Makes.FindAsync(id);
-            //if (make == null)
+            //var Booking = await _context.Bookings.FindAsync(id);
+            //if (Booking == null)
             //{
             //    return NotFound();
             //}
 
-            //_context.Makes.Remove(make);
+            //_context.Bookings.Remove(Booking);
             //await _context.SaveChangesAsync();
 
             //return NoContent();
 
-            var make = await _unitOfWork.Makes.Get(q => q.Id==id);
-            if (make == null)
+            var Booking = await _unitOfWork.Bookings.Get(q => q.Id == id);
+            if (Booking == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Makes.Delete(id);
+            await _unitOfWork.Bookings.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
 
         }
 
-        //private bool MakeExists(int id)
+        //private bool BookingExists(int id)
         //{
-        //    return (_context.Makes?.Any(e => e.Id == id)).GetValueOrDefault();
+        //    return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
         //}
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> BookingExists(int id)
         {
-            var make = await _unitOfWork.Makes.Get(q =>q.Id==id);
-            return make != null;
+            var Booking = await _unitOfWork.Bookings.Get(q => q.Id == id);
+            return Booking != null;
         }
     }
 }
